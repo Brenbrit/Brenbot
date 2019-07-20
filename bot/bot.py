@@ -20,8 +20,8 @@ def update():
     if currentPlatform.startswith("linux"):
         print("gotem")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
-        print(subprocess.Popen("chmod +x update.sh")
-        print(subprocess.Popen("./update.sh"))
+        subprocess.Popen("chmod +x update.sh")
+        subprocess.Popen("./update.sh")
         sys.exit(0)
         
 
