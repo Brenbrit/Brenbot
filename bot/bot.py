@@ -18,7 +18,8 @@ def getToken():
 def update():
     if currentPlatform.startswith("linux"):
         print("gotem")
-        subprocess.Popen(["sh /home/ubuntu/update.sh"])
+        #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
+        print(subprocess.Popen(["ls"]))
         os._exit(-1)
         
 
