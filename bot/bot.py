@@ -19,7 +19,7 @@ def update():
     if currentPlatform.startswith("linux"):
         print("gotem")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
-        print(subprocess.Popen("bash ./update.sh"))
+        print(subprocess.Popen("ls"))
         sys.exit(0)
         
 
