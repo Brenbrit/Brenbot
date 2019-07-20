@@ -28,7 +28,7 @@ async def on_message(message):
         return
 
     if message.content.lower().startswith("update"):
-        await message.channel.send('ok')
+        await client.send_message(message.channel, content = "ok")
         update()
 
 
@@ -40,5 +40,6 @@ client.run(token)
 def update():
     if currentPlatform.startswith("linux"):
         print("gotem")
-        subprocess.run(["sh /home/ubuntu/update.sh"])
+        subprocess.Popen(["sh /home/ubuntu/update.sh"])
+        os._exit(-1)
     
