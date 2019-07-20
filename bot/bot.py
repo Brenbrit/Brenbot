@@ -10,9 +10,9 @@ currentPlatform = platform.system().lower()
 def getToken():
     
     if currentPlatform.startswith("linux"):
-        loc = "/home/ubuntu/Brenbot/bot/codes.txt"
+        loc = "/home/ubuntu/codes.txt"
     elif currentPlatform.startswith("win"):
-        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\bot\\codes.txt"
+        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\important\\codes.txt"
     file = open(loc, "r")
     return file.readline().split(":")[1]
     
