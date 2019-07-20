@@ -8,14 +8,18 @@ client = discord.Client()
 currentPlatform = platform.system().lower()
 
 def getToken():
-    
     if currentPlatform.startswith("linux"):
         loc = "/home/ubuntu/codes.txt"
     elif currentPlatform.startswith("win"):
         loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\important\\codes.txt"
     file = open(loc, "r")
     return file.readline().split(":")[1]
-    
+
+def update():
+    if currentPlatform.startswith("linux"):
+        print("gotem")
+        subprocess.Popen(["sh /home/ubuntu/update.sh"])
+        os._exit(-1)
         
 
 @client.event
@@ -37,9 +41,5 @@ token = getToken()
 client.run(token)
 
 
-def update():
-    if currentPlatform.startswith("linux"):
-        print("gotem")
-        subprocess.Popen(["sh /home/ubuntu/update.sh"])
-        os._exit(-1)
+
     
