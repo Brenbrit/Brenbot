@@ -2,6 +2,7 @@ import discord
 import os
 import platform
 import subprocess
+import sys
 
 #used in the @ parts and at the client.run line
 client = discord.Client()
@@ -19,7 +20,8 @@ def update():
     if currentPlatform.startswith("linux"):
         print("gotem")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
-        print(subprocess.Popen("ls"))
+        print(subprocess.Popen("chmod +x update.sh")
+        print(subprocess.Popen("./update.sh"))
         sys.exit(0)
         
 
