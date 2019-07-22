@@ -34,7 +34,8 @@ kneejerkList = [
     ]
 
 kneejerkBeginningList = [
-    ["https://media.discordapp.net/attachments","reee"]
+    ["https://media.discordapp.net/attachments","reee"],
+    ["https://cdn.discordapp.com/attachments","reee"]
     ]
     
 
