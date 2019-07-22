@@ -25,7 +25,7 @@ def update():
         sys.exit(0)
 
 #these are instant responses
-kneejerk-list = [
+kneejerkList = [
     ["dragon maid sucks", "screw you"],
     ["ayy", "lmao"]
     ["ligma", "what's ligma"],
@@ -33,7 +33,7 @@ kneejerk-list = [
     ["ur gay", "nou"]
     ]
 
-kneejerk-beginning-list = [
+kneejerkBeginningList = [
     ["https://media.discordapp.net/attachments","reee"]
     ]
     
@@ -50,10 +50,10 @@ async def on_message(message):
     if message.content.lower().startswith("update"):
         await client.send_message(message.channel, content = "ok")
         update()
-    for test in kneejerk-list:
+    for test in kneejerkList:
         if (message.content.lower() == test[0]):
             await client.send_message(message.channel, content = test[1])
-    for test in kneejerk-beginning-list:
+    for test in kneejerkBeginningList:
         if (message.content.lower().startswith(test[0])):
             await client.send_message(message.channel, content = test[1])
 
