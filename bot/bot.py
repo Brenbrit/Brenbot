@@ -30,13 +30,16 @@ kneejerkList = [
     ["dragon maid sucks", "screw you",0],
     ["ayy", "lmao",0],
     ["ligma", "what's ligma",0],
-    ["k","You fucking do that every damn time I try to talk to you about anything even if it's not important you just say K and to be honest it makes me feel rejected and unheard like nothing would be better that that bullshit who the fuck just says k after you tell them something important I just don't understand how you think that's ok and I swear to god you're probably just gonna say k to this but when you do you'll know that you're slowly killing me inside",0],
-    ["ur gay", "nou",0]
+    #["k","You fucking do that every damn time I try to talk to you about anything even if it's not important you just say K and to be honest it makes me feel rejected and unheard like nothing would be better that that bullshit who the fuck just says k after you tell them something important I just don't understand how you think that's ok and I swear to god you're probably just gonna say k to this but when you do you'll know that you're slowly killing me inside",0],
+    ["ur gay", "nou",0],
+    ["wait","...",0]
     ]
 
 kneejerkBeginningList = [
     ["https://media.discordapp.net/attachments","reee",0],
-    ["https://cdn.discordapp.com/attachments","reee",0]
+    ["https://cdn.discordapp.com/attachments","reee",0],
+    ["im a bad guy","duh",0],
+    ["i'm a bad guy","duh",0]
     ]
     
 
@@ -52,6 +55,9 @@ async def on_message(message):
     if message.content.lower().startswith("update"):
         await client.send_message(message.channel, content = "ok")
         update()
+
+    #test for all the kneejerk-reaction comments. require an exact match.
+    #timt.time() returns a seconds amount, spam filter is 15sec
     for test in kneejerkList:
         if (message.content.lower() == test[0]):
             if time.time() - test[2] >= 15:
@@ -59,7 +65,9 @@ async def on_message(message):
                 await client.send_message(message.channel, content = test[1])
             else:
                 print("anti-spam caught something")
-                
+
+    #test for the same as above, but works whenever the test
+    #text is at the beginning
     for test in kneejerkBeginningList:
         if (message.content.lower().startswith(test[0])):
             if time.time() - test[2] >= 15:
