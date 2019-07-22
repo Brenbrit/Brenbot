@@ -23,7 +23,20 @@ def update():
         subprocess.Popen("chmod +x update.sh")
         subprocess.Popen("./update.sh")
         sys.exit(0)
-        
+
+#these are instant responses
+kneejerk-list = [
+    ["dragon maid sucks", "screw you"],
+    ["ayy", "lmao"]
+    ["ligma", "what's ligma"],
+    ["k","You fucking do that every damn time I try to talk to you about anything even if it's not important you just say K and to be honest it makes me feel rejected and unheard like nothing would be better that that bullshit who the fuck just says k after you tell them something important I just don't understand how you think that's ok and I swear to god you're probably just gonna say k to this but when you do you'll know that you're slowly killing me inside"],
+    ["ur gay", "nou"]
+    ]
+
+kneejerk-beginning-list = [
+    ["https://media.discordapp.net/attachments","reee"]
+    ]
+    
 
 @client.event
 async def on_ready():
@@ -37,7 +50,12 @@ async def on_message(message):
     if message.content.lower().startswith("update"):
         await client.send_message(message.channel, content = "ok")
         update()
-
+    for test in kneejerk-list:
+        if (message.content.lower() == test[0]):
+            await client.send_message(message.channel, content = test[1])
+    for test in kneejerk-beginning-list:
+        if (message.content.lower().startswith(test[0])):
+            await client.send_message(message.channel, content = test[1])
 
 #this actually starts the bot
 token = getToken()
