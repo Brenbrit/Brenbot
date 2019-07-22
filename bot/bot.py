@@ -40,7 +40,8 @@ kneejerkBeginningList = [
     ["https://cdn.discordapp.com/attachments","reee",0],
     ["im a bad guy","duh",0],
     ["i'm a bad guy","duh",0],
-    ["xd","ecks dee",0]
+    ["xd","ecks dee",0],
+    ["sauce","https://i.imgur.com/R390EId_d.jpg",0]
     ]
     
 
