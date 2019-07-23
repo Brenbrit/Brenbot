@@ -21,8 +21,7 @@ def update():
     if currentPlatform.startswith("linux"):
         print("Recognized a linux computer. Starting the update.sh.")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
-        subprocess.Popen("chmod +x update.sh")
-        subprocess.Popen("./update.sh")
+        subprocess.Popen(['./update.sh'], stdout=subprocess.PIPE, shell=True)
         sys.exit(0)
 
 #these are instant responses
