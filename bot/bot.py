@@ -6,7 +6,6 @@ import sys
 import time
 
 #used in the @ parts and at the client.run line
-print("Hello world!")
 client = discord.Client()
 currentPlatform = platform.system().lower()
 
