@@ -19,7 +19,7 @@ def getToken():
 
 def update():
     if currentPlatform.startswith("linux"):
-        print("gotem")
+        print("Recognized a linux computer. Starting the update.sh.")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
         subprocess.Popen("chmod +x update.sh")
         subprocess.Popen("./update.sh")
