@@ -9,11 +9,16 @@ import time
 client = discord.Client()
 currentPlatform = platform.system().lower()
 
+def printKomi():
+    loc = "/home/ubuntu/Brenbot/komi.txt"
+    with open(filename) as f:
+        print(f.readlines())
+
 def getToken():
     if currentPlatform.startswith("linux"):
         loc = "/home/ubuntu/codes.txt"
-    elif currentPlatform.startswith("win"):
-        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\important\\codes.txt"
+    #elif currentPlatform.startswith("win"):
+        #loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\important\\codes.txt"
     file = open(loc, "r")
     return file.readline().split(":")[1]
 
@@ -35,8 +40,8 @@ kneejerkList = [
     ]
 
 kneejerkBeginningList = [
-    ["https://media.discordapp.net/attachments","reee",0],
-    ["https://cdn.discordapp.com/attachments","reee",0],
+    #["https://media.discordapp.net/attachments","reee",0],
+    #["https://cdn.discordapp.com/attachments","reee",0],
     ["im a bad guy","duh",0],
     ["i'm a bad guy","duh",0],
     ["xd","ecks dee",0],
@@ -47,6 +52,7 @@ kneejerkBeginningList = [
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    printKomi()
 
 @client.event
 async def on_message(message):
