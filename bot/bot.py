@@ -11,7 +11,7 @@ currentPlatform = platform.system().lower()
 
 def printKomi():
     loc = "/home/ubuntu/Brenbot/komi.txt"
-    with open(filename) as f:
+    with open(loc) as f:
         print(f.readlines())
 
 def getToken():
