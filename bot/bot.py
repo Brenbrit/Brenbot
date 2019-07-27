@@ -10,17 +10,19 @@ client = discord.Client()
 currentPlatform = platform.system().lower()
 
 def printKomi():
-    loc = "/home/ubuntu/Brenbot/komi.txt"
-    with open(loc) as f:
-        loc = f.readlines(), end="\n"
-    for line in loc:
-        print(line)
+    if currentPlatform.startswith("linux"):
+        loc = "/home/ubuntu/Brenbot/komi.txt"
+    elif currentPlatform.startswith("win"):
+        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\komi.txt"
+    with open(loc, encoding="utf8") as f:
+        for line in f.readlines():
+            print(line, end="")
 
 def getToken():
     if currentPlatform.startswith("linux"):
         loc = "/home/ubuntu/codes.txt"
-    #elif currentPlatform.startswith("win"):
-        #loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\important\\codes.txt"
+    elif currentPlatform.startswith("win"):
+        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot connection info\\codes.txt"
     file = open(loc, "r")
     return file.readline().split(":")[1]
 
