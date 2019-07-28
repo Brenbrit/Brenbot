@@ -5,7 +5,7 @@ def process(message):
 	print("this is where the processing will happen")
 
 	if message.content.lower().startswith("update"):
-        out[0].append(message.channel, "ok")
+        out[0].append([message.channel, "ok"])
         update()
 
 	return [[],[]]
