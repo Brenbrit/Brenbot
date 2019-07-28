@@ -64,7 +64,7 @@ async def on_message(message):
     file_responses = out[1]
 
     for text_resp in text_responses:
-        await client.send_message(text_resp[0], text_resp[1])
+        await client.send_message(text_resp[0], content = text_resp[1])
     for file_resp in file_responses:
         await client.send_message(file_resp[0], file_resp[1])
 
