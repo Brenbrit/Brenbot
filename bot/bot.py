@@ -17,6 +17,7 @@ def printKomi():
     with open(loc, encoding="utf8") as f:
         for line in f.readlines():
             print(line, end="")
+    print("\n\n")
 
 def getToken():
     if currentPlatform.startswith("linux"):
