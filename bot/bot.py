@@ -4,8 +4,10 @@ import platform
 import subprocess
 import sys
 import time
+import text_processor
 
-print("hi")
+text_processor.textp()
+
 #used in the @ parts and at the client.run line
 client = discord.Client()
 currentPlatform = platform.system().lower()
