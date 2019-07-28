@@ -1,2 +1,3 @@
-def textp:
+def textp():
 	print("hi")
+	return
