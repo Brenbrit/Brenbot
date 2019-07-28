@@ -60,6 +60,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    #temporary
+    print("Received message:\"", end="")
+    print(message.content, end="")
+    print("\"")
     if message.author == client.user:
         return
 
