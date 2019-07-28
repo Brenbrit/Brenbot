@@ -5,6 +5,7 @@ import subprocess
 import sys
 import time
 
+print("hi")
 #used in the @ parts and at the client.run line
 client = discord.Client()
 currentPlatform = platform.system().lower()
@@ -52,7 +53,7 @@ kneejerkBeginningList = [
     ["xd","ecks dee",0],
     ["sauce","https://i.imgur.com/R390EId_d.jpg",0]
     ]
-    
+
 
 @client.event
 async def on_ready():
@@ -95,7 +96,3 @@ async def on_message(message):
 #this actually starts the bot
 token = getToken()
 client.run(token)
-
-
-
-    
