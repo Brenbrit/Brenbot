@@ -4,38 +4,12 @@ import platform
 import subprocess
 import sys
 import time
-import text_processor
-
-text_processor.textp()
+import processors
+import utils
 
 #used in the @ parts and at the client.run line
 client = discord.Client()
 currentPlatform = platform.system().lower()
-
-def printKomi():
-    if currentPlatform.startswith("linux"):
-        loc = "/home/ubuntu/Brenbot/komi.txt"
-    elif currentPlatform.startswith("win"):
-        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot\\komi.txt"
-    with open(loc, encoding="utf8") as f:
-        for line in f.readlines():
-            print(line, end="")
-    print("\n\n")
-
-def getToken():
-    if currentPlatform.startswith("linux"):
-        loc = "/home/ubuntu/codes.txt"
-    elif currentPlatform.startswith("win"):
-        loc = "C:\\Users\\Brenbrit\\Documents\\Brenbot connection info\\codes.txt"
-    file = open(loc, "r")
-    return file.readline().split(":")[1]
-
-def update():
-    if currentPlatform.startswith("linux"):
-        print("Recognized a linux computer. Starting the update.sh.")
-        #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
-        subprocess.Popen(['./update.sh'], shell=True)
-        sys.exit(0)
 
 #these are instant responses
 kneejerkList = [
@@ -60,41 +34,65 @@ kneejerkBeginningList = [
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    printKomi()
+    utils.printKomi()
 
 @client.event
 async def on_message(message):
+    text_responses = []
+    file_responses = []
+
+    #the processors output an array
+    #each array has:
+        #0: text responses, in the form of tuples
+            #[channel, content]
+        #1: file responses, in the form of tuples
+            #[channel, content]
+            #these will be deleted later
+        #anything else may be appended to this list, but each
+        #returned array from processors must have >= 2 sub-arrays.
     #temporary
+
     print("Received message:\"", end="")
     print(message.content, end="")
     print("\"")
+
     if message.author == client.user:
         return
 
-    if message.content.lower().startswith("update"):
-        await client.send_message(message.channel, content = "ok")
-        update()
+    out = processors.process(message)
+    text_responses = out[0]
+    file_responses = out[1]
+
+    for text_resp in text_responses:
+        await client.send_message(text_resp[0], text_resp[1])
+    for file_resp in file_responses:
+        await client.send_message(file_resp[0], file_resp[1])
+
+
+    #if message.content.lower().startswith("update"):
+    #    await client.send_message(message.channel, content = "ok")
+    #    update()
 
     #test for all the kneejerk-reaction comments. require an exact match.
     #timt.time() returns a seconds amount, spam filter is 15sec
-    for test in kneejerkList:
-        if (message.content.lower() == test[0]):
-            if time.time() - test[2] >= 15:
-                test[2] = time.time()
-                await client.send_message(message.channel, content = test[1])
-            else:
-                print("anti-spam caught something")
+    #for test in kneejerkList:
+    #    if (message.content.lower() == test[0]):
+    #        if time.time() - test[2] >= 15:
+    #            test[2] = time.time()
+    #            await client.send_message(message.channel, content = test[1])
+    #        else:
+    #            print("anti-spam caught something")
 
     #test for the same as above, but works whenever the test
     #text is at the beginning
-    for test in kneejerkBeginningList:
-        if (message.content.lower().startswith(test[0])):
-            if time.time() - test[2] >= 15:
-                test[2] = time.time()
-                await client.send_message(message.channel, content = test[1])
-            else:
-                print("anti-spam caught something")
+    #for test in kneejerkBeginningList:
+    #    if (message.content.lower().startswith(test[0])):
+    #        if time.time() - test[2] >= 15:
+    #            test[2] = time.time()
+    #            await client.send_message(message.channel, content = test[1])
+    #        else:
+    #            print("anti-spam caught something")
 
 #this actually starts the bot
-token = getToken()
+token = utils.getToken()
 client.run(token)
