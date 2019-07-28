@@ -1,15 +1,11 @@
 import discord
-import os
-import platform
 import subprocess
-import sys
 import time
 import processors
 import utils
 
 #used in the @ parts and at the client.run line
 client = discord.Client()
-currentPlatform = platform.system().lower()
 
 #these are instant responses
 kneejerkList = [

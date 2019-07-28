@@ -1,3 +1,9 @@
+import platform
+from sys import exit
+
+currentPlatform = platform.system().lower()
+
+
 def printKomi():
     if currentPlatform.startswith("linux"):
         loc = "/home/ubuntu/Brenbot/komi.txt"
@@ -21,4 +27,4 @@ def update():
         print("Recognized a linux computer. Starting the update.sh.")
         #subprocess.Popen(["sh", "/home/ubuntu/update.sh"])
         subprocess.Popen(['./update.sh'], shell=True)
-        sys.exit(0)
+        exit(0)
