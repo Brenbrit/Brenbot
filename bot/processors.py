@@ -2,7 +2,7 @@ from utils import update
 
 def process(message):
     out = [[],[]]
-    print("this is where the processing will happen")
+    print(type(message.type))
 
     if message.content.lower().startswith("update"):
         out[0].append([message.channel, "ok"])
