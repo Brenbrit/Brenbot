@@ -1,2 +1,15 @@
-/target/
-/.settings/
+*.class
+
+# Package files #
+*.jar
+*.war
+*.ear
+
+# Properties file
+*.properties
+
+# IDE
+target/
+.idea/
+modules/
+.settings/
