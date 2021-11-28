@@ -1,4 +1,12 @@
+# How many arguments are there?
+if [ $# -gt 0 ]
+then
+		mvnloc=$1
+else
+		mvnloc=$(whereis mvn | cut -f 2 -d ' ')
+fi
+
 echo "Packaging"
-mvn package -q
+$mvnloc package -q
 echo "Executing"
-mvn exec:java -q -Dexec.mainClass=com.brenbrit.brenbot.Bot -Dexec.classpathScope=runtime -Dexec.args=$(cat /usr/share/brenbot/token)
+$mvnloc exec:java -q -Dexec.mainClass=com.brenbrit.brenbot.Bot -Dexec.classpathScope=runtime
