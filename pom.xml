@@ -37,11 +37,11 @@
       <artifactId>reactive-streams</artifactId>
       <version>1.0.3</version>
 	</dependency>-->
-	<dependency>
+	<!--dependency>
       <groupId>org.reactivestreams</groupId>
       <artifactId>reactive-streams-tck</artifactId>
       <version>1.0.3</version>
-	</dependency>
+	</dependency-->
 
 
   </dependencies>
@@ -55,26 +55,17 @@
           <version>3.1.0</version>
 		</plugin>
 		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
 		  <artifactId>maven-assembly-plugin</artifactId>
-		  <executions>
-            <execution>
-		      <phase>package</phase>
-		      <goals>
-                <goal>single</goal>
-              </goals>
-		      <configuration>
-		        <archive>
-				  <manifest>
-				    <mainClass>com.brenbrit.brenbot.Bot</mainClass>
-				  </manifest>
-				</archive>
-				<descriptorRefs>
-				  <descriptorRef>jar-with-dependencies</descriptorRef>
+		    <configuration>
+		      <archive>
+				    <manifest>
+				      <mainClass>com.brenbrit.brenbot.Bot</mainClass>
+				    </manifest>
+				  </archive>
+				  <descriptorRefs>
+				    <descriptorRef>jar-with-dependencies</descriptorRef>
 				</descriptorRefs>
-		      </configuration>
-		    </execution>
-		  </executions>
+		  </configuration>
 		</plugin>
 		<plugin>
 		  <groupId>org.apache.maven.plugins</groupId>

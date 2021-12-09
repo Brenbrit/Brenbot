@@ -9,6 +9,9 @@ else
 fi
 
 echo "Packaging"
-$mvnloc package -q
+$mvnloc -q org.apache.maven.plugins:maven-assembly-plugin:single
+
 echo "Executing"
-$mvnloc exec:java -q -Dexec.mainClass=com.brenbrit.brenbot.Bot -Dexec.classpathScope=runtime
+# Find the jar with the highest version number
+jarpath=$(find target/ | grep with-dependencies | sort -r | head -n 1)
+java -jar $jarpath
