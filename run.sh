@@ -9,7 +9,8 @@ else
 fi
 
 echo "Packaging"
-$mvnloc -q org.apache.maven.plugins:maven-assembly-plugin:single
+if [ ! -d "logs" ]; then mkdir logs; fi
+$mvnloc org.apache.maven.plugins:maven-assembly-plugin:single > logs/$(date)
 
 echo "Executing"
 # Find the jar with the highest version number
