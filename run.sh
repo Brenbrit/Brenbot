@@ -1,18 +1,19 @@
-# How many arguments are there?
+#!/bin/bash
+
 if [ $# -gt 0 ]
 then
-		echo "Using Maven located at $1."
-		mvnloc=$1
+echo "Using Maven located at $1."
+mvnloc=$1
 else
-		echo "Using Maven located at $(whereis mvn | cut -f 2 -d ' ')."
-		mvnloc=$(whereis mvn | cut -f 2 -d ' ')
+echo "Using Maven located at $(type -p mvn)."
+mvnloc=$(type -p mvn)
 fi
 
-echo "Packaging"
+echo "Compiling and packaging"
 if [ ! -d "logs" ]; then mkdir logs; fi
-$mvnloc org.apache.maven.plugins:maven-assembly-plugin:single > logs/$(date)
+"$mvnloc" compile org.apache.maven.plugins:maven-assembly-plugin:single > "logs/$(date).txt"
 
-echo "Executing"
 # Find the jar with the highest version number
 jarpath=$(find target/ | grep with-dependencies | sort -r | head -n 1)
-java -jar $jarpath
+echo "Executing $jarpath"
+java -jar "$jarpath"
