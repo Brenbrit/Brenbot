@@ -1,11 +1,15 @@
 package com.brenbrit.brenbot;
 
+import com.brenbrit.brenbot.listeners.*;
+
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.lifecycle.ReadyEvent;
 import discord4j.core.GatewayDiscordClient;
 import discord4j.core.object.entity.Message;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.User;
+import discord4j.gateway.intent.Intent;
+import discord4j.gateway.intent.IntentSet;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -32,35 +36,33 @@ public class Bot {
 
         // A DiscordClient only represents the operations we can do while not
         // logged in. To do other bot things, we've got to log in.
-        final DiscordClient client = DiscordClient.create(properties.getProperty("discord.token"));
+        final DiscordClient discord = DiscordClient.create(properties.getProperty("discord.token"));
 
-        Mono<Void> login = client.withGateway((GatewayDiscordClient gateway) -> {
+        discord.gateway().setEnabledIntents(IntentSet.of(
+                    Intent.GUILDS,
+                    Intent.GUILD_MEMBERS,
+                    Intent.GUILD_MESSAGES,
+                    Intent.GUILD_MESSAGE_REACTIONS,
+                    Intent.DIRECT_MESSAGES))
+            .withGateway(client -> Mono.when(
+                        readyListener(client),
+                        messageListener(client)))
+            .block();
 
-            // Run on login
-            Mono<Void> printOnLogin = gateway.on(ReadyEvent.class, event ->
-                Mono.fromRunnable(() -> {
-                    final User self = event.getSelf();
-                    System.out.printf("Logged in as %s#%s%n", self.getUsername(), self.getDiscriminator());
-                }))
-                .then();
+    }
 
-            // Read messages
-            Mono<Void> handleMessage = gateway.on(MessageCreateEvent.class, event -> {
-                Message message = event.getMessage();
-                System.out.println("Received message: " + message.getContent());
+    private Mono<Void> messageListener(GatewayDiscordClient client) {
+        final MessageListener listener = new MessageListener();
+        return client.getEventDispatcher().on(MessageCreateEvent.class)
+            .flatMap(listener::onReady)
+            .then();
+    }
 
-                if (message.getContent().equalsIgnoreCase("hello")) {
-                    message.getChannel().flatMap(channel -> channel.createMessage("world!"));
-
-                return Mono.empty();
-            }).then();
-
-            // combine them!
-            return printOnLogin.and(handleMessage);
-        });
-
-        System.out.println("Blocking");
-        login.block();
+    private Mono<Void> readyListener(GatewayDiscordClient client) {
+        final ReadyListener listener = new ReadyListener();
+        return client.getEventDispatcher().on(ReadyEvent.class)
+            .flatMap(listener::onReady)
+            .then();
     }
 
     public static Properties readProperties(String fileName) {
