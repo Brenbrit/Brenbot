@@ -11,8 +11,10 @@ fi
 
 echo "Compiling and packaging"
 if [ ! -d "logs" ]; then mkdir logs; fi
-bash | set +o pipefail
+(
+(set -o pipefail) || (SHELL ["/bin/bash", "-o", "pipefail"])
 "$mvnloc" compile org.apache.maven.plugins:maven-assembly-plugin:single | tee "logs/$(date).txt" || exit 1
+)
 
 # Find the jar with the highest version number
 jarpath=$(find target/ | grep with-dependencies | sort -r | head -n 1)
