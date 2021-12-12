@@ -50,8 +50,7 @@ public class Bot {
                 System.out.println("Received message: " + message.getContent());
 
                 if (message.getContent().equalsIgnoreCase("hello")) {
-                    return message.getChannel().flatMap(channel -> channel.createMessage("world!"));
-                }
+                    message.getChannel().flatMap(channel -> channel.createMessage("world!"));
 
                 return Mono.empty();
             }).then();

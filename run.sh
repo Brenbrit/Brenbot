@@ -19,8 +19,4 @@ if [ ! -d "logs" ]; then mkdir logs; fi
 # Find the jar with the highest version number
 jarpath=$(find target/ | grep with-dependencies | sort -r | head -n 1)
 echo "Executing $jarpath"
-returncode=java -jar "$jarpath"
-if ( "$returncode" -eq "2" )
-then
-    git pull
-fi
+java -jar "$jarpath"
