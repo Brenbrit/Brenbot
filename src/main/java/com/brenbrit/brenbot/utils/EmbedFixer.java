@@ -9,6 +9,11 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import net.bramp.ffmpeg.FFmpeg;
+import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import net.bramp.ffmpeg.FFmpegExecutor;
+import net.bramp.ffmpeg.FFprobe;
+import net.bramp.ffmpeg.probe.FFmpegStream;
 
 public class EmbedFixer {
 
@@ -19,11 +24,23 @@ public class EmbedFixer {
     };
 
     String DOWNLOAD_LOC = "/tmp/brenbot/";
+//    String FFMPEG_LOC;
+
+    FFmpeg ffmpeg;
+    FFprobe ffprobe;
 
     public EmbedFixer() {
         System.out.println("Init EmbedFixer");
-        if (!Files.isDirectory(Paths.get(DOWNLOAD_LOC)))
+        if (!Files.isDirectory(Paths.get(DOWNLOAD_LOC))){
             new File(DOWNLOAD_LOC).mkdirs();
+        }
+        try {
+            ffmpeg = new FFmpeg();
+            ffprobe = new FFprobe();
+        } catch (IOException e) {
+            System.out.println("Failed to initialize FFmpeg.");
+            e.printStackTrace();
+        }
     }
 
     public String checkAndFixEmbed(Attachment attachment) {
@@ -35,7 +52,6 @@ public class EmbedFixer {
 
     private String checkEmbed(Attachment attachment) {
         String url = attachment.getUrl();
-        System.out.println(url);
         String[] split = url.split("\\.", 0);
 
         String fileExtension = split[split.length - 1];
@@ -52,15 +68,23 @@ public class EmbedFixer {
 
         String fileLoc = DOWNLOAD_LOC + System.currentTimeMillis();
 
+        System.out.printf("Downloading %s -> %s%n", url, fileLoc);
+
         // We have a good extension on our hands!
         if (!Downloader.downloadFromURL(url, fileLoc)) {
             System.out.println("Failed to download " + url);
             return null;
         }
 
-        String[] ffmpegArgs = {"ffmpeg", fileLoc};
-        String ffmpegOutput = getCommandOutput(ffmpegArgs);
-        System.out.println(ffmpegOutput);
+        try {
+            FFmpegStream stream = ffprobe.probe(fileLoc).getStreams().get(0);
+            System.out.printf("%nCodec: '%s' ; Width: %dpx ; Height: %dpx",
+                stream.codec_long_name, stream.width, stream.height);
+        } catch (IOException e) {
+            System.out.println("Failed to probe " + fileLoc);
+            e.printStackTrace();
+        }
+
 
         return fileLoc;
     }
