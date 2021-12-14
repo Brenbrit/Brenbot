@@ -40,9 +40,7 @@ public class MessageListener {
         }
 
             // Does the message have any attachments?
-            for (Attachment attachment : message.getAttachments()) {
-                embedFixer.checkAndFixEmbed(attachment);
-            }
+            embedFixer.checkAndFixEmbeds(message);
 
         return Mono.empty();
     }
