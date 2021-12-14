@@ -2,10 +2,12 @@ package com.brenbrit.brenbot.utils;
 
 import com.brenbrit.brenbot.utils.Downloader;
 
+import discord4j.core.spec.MessageCreateSpec;
 import discord4j.core.object.entity.Attachment;
 import discord4j.core.object.entity.Message;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,6 +29,7 @@ public class EmbedFixer {
     };
 
     String DOWNLOAD_LOC = "/tmp/brenbot/";
+    double H264_SIZE_MULTIPLIER = 1.25d;
 
     FFmpeg ffmpeg;
     FFprobe ffprobe;
@@ -62,8 +65,13 @@ public class EmbedFixer {
             if (result != null) {
                 System.out.println("h.265 attachment found! Fixing.");
                 String fixed = fixEmbed(result);
-                System.out.printf("Fixed embed location: %s.%n", fixed);
+                System.out.printf("Fixed embed location: %s. Uploading...", fixed);
+                String msg = "I see that your video didn't embed.\nthat sucks lmao";
+                message.getChannel()
+                    .flatMap(channel -> channel.createMessage(msg)).block();
+
                 try {
+                    System.out.println("Deleting " + fixed);
                     System.out.println("Deleting " + result.fileLoc);
                     new File(result.fileLoc).delete();
                 } catch (Exception e) {
@@ -128,16 +136,18 @@ public class EmbedFixer {
             newLoc += splitLoc[i] + "/";
         }
         newLoc += "h264_" + splitLoc[splitLoc.length - 1];
+        String format = splitLoc[splitLoc.length - 1].split("\\.", 2)[1];
 
         long oldSize = new File(input.fileLoc).length();
-        long targetSize = oldSize;
-        System.out.println(oldSize);
+        long targetSize = (long)((double)oldSize * H264_SIZE_MULTIPLIER);
+        if (targetSize > 8000000L) targetSize = 7000000L;
 
         FFmpegBuilder builder = new FFmpegBuilder()
-            .setInput(input.fileLoc)
+            .setInput(input.probeResult)
             .addOutput(newLoc)
+                .setFormat(format)
                 .disableSubtitle()
-                .setTargetSize(oldSize)
+                .setTargetSize(targetSize)
                 .setVideoCodec("libx264")
                 .done();
         ffmpegExecutor.createTwoPassJob(builder).run();

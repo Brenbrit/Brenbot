@@ -13,9 +13,9 @@ if [ ! -d "logs" ]; then mkdir logs; fi
 (
 logloc="logs/$(date).txt"
 echo "Compiling"
-"$mvnloc" compile -q | tee "$logloc" || exit 1
+"$mvnloc" compile | tee "$logloc" || exit 1
 echo "Packaging"
-"$mvnloc" org.apache.maven.plugins:maven-assembly-plugin:single -q | tee "$logloc" || exit 1
+"$mvnloc" org.apache.maven.plugins:maven-assembly-plugin:single | tee "$logloc" || exit 1
 )
 
 # Find the jar with the highest version number
