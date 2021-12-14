@@ -13,7 +13,7 @@ if [ ! -d "logs" ]; then mkdir logs; fi
 (
 logloc="logs/$(date).txt"
 echo "Compiling"
-"$mvnloc" compile | tee "$logloc" || exit 1
+"$mvnloc" compile -q | tee "$logloc" || exit 1
 echo "Packaging"
 "$mvnloc" org.apache.maven.plugins:maven-assembly-plugin:single -q | tee "$logloc" || exit 1
 )
