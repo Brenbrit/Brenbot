@@ -9,11 +9,13 @@ echo "Using Maven located at $(type -p mvn)."
 mvnloc=$(type -p mvn)
 fi
 
-echo "Compiling and packaging"
 if [ ! -d "logs" ]; then mkdir logs; fi
 (
-(set -o pipefail) || (SHELL ["/bin/bash", "-o", "pipefail"])
-"$mvnloc" compile org.apache.maven.plugins:maven-assembly-plugin:single | tee "logs/$(date).txt" || exit 1
+logloc="logs/$(date).txt"
+echo "Compiling"
+"$mvnloc" compile | tee "$logloc" || exit 1
+echo "Packaging"
+"$mvnloc" org.apache.maven.plugins:maven-assembly-plugin:single -q | tee "$logloc" || exit 1
 )
 
 # Find the jar with the highest version number
