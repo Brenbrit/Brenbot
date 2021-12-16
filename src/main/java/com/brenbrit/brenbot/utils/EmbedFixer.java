@@ -71,7 +71,8 @@ public class EmbedFixer {
                     .flatMap(channel -> channel.createMessage(msg)).block();
 
                 try {
-                    System.out.println("Deleting " + fixed);
+                    //System.out.println("Deleting " + fixed);
+                    //new File(fixed).delete();
                     System.out.println("Deleting " + result.fileLoc);
                     new File(result.fileLoc).delete();
                 } catch (Exception e) {
