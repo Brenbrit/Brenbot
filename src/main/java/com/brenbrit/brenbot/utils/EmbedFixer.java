@@ -64,8 +64,8 @@ public class EmbedFixer {
             VideoFile result = checkEmbed(attachment);
             if (result != null) {
                 System.out.println("h.265 attachment found! Fixing.");
-                String fixed = fixEmbed(result);
-                System.out.printf("Fixed embed location: %s. Uploading...", fixed);
+                //String fixed = fixEmbed(result);
+                //System.out.printf("Fixed embed location: %s. Uploading...", fixed);
                 String msg = "I see that your video didn't embed.\nthat sucks lmao";
                 message.getChannel()
                     .flatMap(channel -> channel.createMessage(msg)).block();
