@@ -2,9 +2,7 @@ package com.brenbrit.brenbot.utils;
 
 import com.brenbrit.brenbot.utils.Downloader;
 
-import discord4j.core.spec.MessageCreateSpec;
-import discord4j.core.object.entity.Attachment;
-import discord4j.core.object.entity.Message;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,8 +56,9 @@ public class EmbedFixer {
             e.printStackTrace();
         }
     }
-
+/*
     public void checkAndFixEmbeds(Message message) {
+
         for (Attachment attachment : message.getAttachments()) {
             VideoFile result = checkEmbed(attachment);
             if (result != null) {
@@ -80,6 +79,7 @@ public class EmbedFixer {
                 }
             }
         }
+
     }
 
     private VideoFile checkEmbed(Attachment attachment) {
@@ -129,6 +129,7 @@ public class EmbedFixer {
 
         return null;
     }
+    */
 
     private String fixEmbed(VideoFile input) {
         String[] splitLoc = input.fileLoc.split("/");

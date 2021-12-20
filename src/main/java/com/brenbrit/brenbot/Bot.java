@@ -2,20 +2,13 @@ package com.brenbrit.brenbot;
 
 import com.brenbrit.brenbot.listeners.*;
 
-import discord4j.core.DiscordClient;
-import discord4j.core.event.domain.lifecycle.ReadyEvent;
-import discord4j.core.GatewayDiscordClient;
-import discord4j.core.object.entity.Message;
-import discord4j.core.event.domain.message.MessageCreateEvent;
-import discord4j.core.object.entity.User;
-import discord4j.gateway.intent.Intent;
-import discord4j.gateway.intent.IntentSet;
-import reactor.core.publisher.Mono;
-
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Properties;
+import javax.security.auth.login.LoginException;
 
 public class Bot {
 
@@ -34,35 +27,17 @@ public class Bot {
 
         System.out.println("Starting up Brenbot.");
 
-        // A DiscordClient only represents the operations we can do while not
-        // logged in. To do other bot things, we've got to log in.
-        final DiscordClient discord = DiscordClient.create(properties.getProperty("discord.token"));
+        try {
+            final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token")).build();
+        } catch (LoginException le) {
+            System.out.println("LoginException caught. Exiting.");
+            System.exit(1);
+        }
 
-        discord.gateway().setEnabledIntents(IntentSet.of(
-                    Intent.GUILDS,
-                    Intent.GUILD_MEMBERS,
-                    Intent.GUILD_MESSAGES,
-                    Intent.GUILD_MESSAGE_REACTIONS,
-                    Intent.DIRECT_MESSAGES))
-            .withGateway(client -> Mono.when(
-                        readyListener(client),
-                        messageListener(client)))
-            .block();
+        System.out.println("done");
 
-    }
 
-    private Mono<Void> messageListener(GatewayDiscordClient client) {
-        final MessageListener listener = new MessageListener();
-        return client.getEventDispatcher().on(MessageCreateEvent.class)
-            .flatMap(listener::onReady)
-            .then();
-    }
 
-    private Mono<Void> readyListener(GatewayDiscordClient client) {
-        final ReadyListener listener = new ReadyListener();
-        return client.getEventDispatcher().on(ReadyEvent.class)
-            .flatMap(listener::onReady)
-            .then();
     }
 
     public static Properties readProperties(String fileName) {
