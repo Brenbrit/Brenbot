@@ -28,7 +28,9 @@ public class Bot {
         System.out.println("Starting up Brenbot.");
 
         try {
-            final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token")).build();
+            final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
+                .addEventListeners(new MessageListener(), new ReadyListener())
+                .build();
         } catch (LoginException le) {
             System.out.println("LoginException caught. Exiting.");
             System.exit(1);

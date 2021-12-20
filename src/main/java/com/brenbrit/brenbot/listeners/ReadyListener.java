@@ -1,13 +1,17 @@
 package com.brenbrit.brenbot.listeners;
 
+import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-/**
- * Created by steve on 14/07/2016.
- */
-public class ReadyListener {
+public class ReadyListener extends ListenerAdapter {
 
     public ReadyListener() {
-        System.out.println("init ReadyListener");
+        System.out.println("ReadyListener initialized.");
+    }
+
+    @Override
+    public void onReady(ReadyEvent event) {
+        System.out.println("Ready!");
     }
 
 }
