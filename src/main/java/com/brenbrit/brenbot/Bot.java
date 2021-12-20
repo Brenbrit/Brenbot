@@ -35,11 +35,6 @@ public class Bot {
             System.out.println("LoginException caught. Exiting.");
             System.exit(1);
         }
-
-        System.out.println("done");
-
-
-
     }
 
     public static Properties readProperties(String fileName) {

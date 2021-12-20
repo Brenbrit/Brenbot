@@ -10,7 +10,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class MessageListener extends ListenerAdapter {
 
+    private EmbedFixer embedFixer;
+
     public MessageListener() {
+        embedFixer = new EmbedFixer();
         System.out.println("MessageListener initialized.");
     }
 
@@ -25,7 +28,10 @@ public class MessageListener extends ListenerAdapter {
                 event.getMember().getEffectiveName(),
                 event.getMessage().getContentDisplay());
         }
+
         Message msg = event.getMessage();
+        embedFixer.checkAndFixEmbeds(msg);
+
 
         /* if (msg.getContentRaw().equals(".hello")) {
             System.out.println("Hello found");

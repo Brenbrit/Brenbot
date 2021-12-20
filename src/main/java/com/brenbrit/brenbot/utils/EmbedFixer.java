@@ -17,6 +17,9 @@ import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.probe.FFmpegProbeResult;
 import net.bramp.ffmpeg.probe.FFmpegStream;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Message.Attachment;
+import net.dv8tion.jda.api.entities.MessageChannel;
 
 public class EmbedFixer {
 
@@ -56,22 +59,21 @@ public class EmbedFixer {
             e.printStackTrace();
         }
     }
-/*
+
     public void checkAndFixEmbeds(Message message) {
 
         for (Attachment attachment : message.getAttachments()) {
             VideoFile result = checkEmbed(attachment);
             if (result != null) {
                 System.out.println("h.265 attachment found! Fixing.");
-                //String fixed = fixEmbed(result);
-                //System.out.printf("Fixed embed location: %s. Uploading...", fixed);
-                String msg = "I see that your video didn't embed.\nthat sucks lmao";
-                message.getChannel()
-                    .flatMap(channel -> channel.createMessage(msg)).block();
+                File fixed = fixEmbed(result);
+                MessageChannel chan = message.getChannel();
+                System.out.println("Sending fixed file.");
+                chan.sendFile(fixed).queue();
 
                 try {
-                    //System.out.println("Deleting " + fixed);
-                    //new File(fixed).delete();
+                    System.out.println("Deleting " + fixed.getPath());
+                    fixed.delete();
                     System.out.println("Deleting " + result.fileLoc);
                     new File(result.fileLoc).delete();
                 } catch (Exception e) {
@@ -129,9 +131,9 @@ public class EmbedFixer {
 
         return null;
     }
-    */
 
-    private String fixEmbed(VideoFile input) {
+
+    private File fixEmbed(VideoFile input) {
         String[] splitLoc = input.fileLoc.split("/");
         String newLoc = "";
         for (int i = 0; i < splitLoc.length - 1; i++) {
@@ -154,6 +156,6 @@ public class EmbedFixer {
                 .done();
         ffmpegExecutor.createTwoPassJob(builder).run();
 
-        return newLoc;
+        return new File(newLoc);
     }
 }
