@@ -30,9 +30,14 @@ public class Bot {
         try {
             final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
                 .addEventListeners(new MessageListener(), new ReadyListener())
-                .build();
+                .build().awaitReady();
         } catch (LoginException le) {
+            le.printStackTrace();
             System.out.println("LoginException caught. Exiting.");
+            System.exit(1);
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+            System.out.println("InterruptedException caught. Exiting.");
             System.exit(1);
         }
     }
