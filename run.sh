@@ -5,7 +5,7 @@ then
 echo "Using Maven located at $1."
 mvnloc=$1
 export JAVA_HOME="/etc/jdk-16.0.2+7"
-export PATH="/etc/jdk-16.0.2+7:$PATH"
+export PATH="/etc/jdk-16.0.2+7/bin:$PATH"
 else
 echo "Using Maven located at $(type -p mvn)."
 mvnloc=$(type -p mvn)
