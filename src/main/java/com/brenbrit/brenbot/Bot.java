@@ -2,7 +2,6 @@ package com.brenbrit.brenbot;
 
 import com.brenbrit.brenbot.listeners.*;
 
-import okhttp3.OkHttpClient;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import java.io.IOException;
@@ -29,11 +28,8 @@ public class Bot {
         System.out.println("Starting up Brenbot.");
 
         try {
-            OkHttpClient okhclient = new OkHttpClient();
-
             final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
                 .addEventListeners(new MessageListener(), new ReadyListener())
-                .setHttpClient(okhclient)
                 .build().awaitReady();
         } catch (LoginException le) {
             le.printStackTrace();
