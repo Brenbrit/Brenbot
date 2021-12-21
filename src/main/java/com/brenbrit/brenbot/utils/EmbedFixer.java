@@ -122,8 +122,10 @@ public class EmbedFixer {
                     return new VideoFile(fileLoc, res);
                 }
             }
+            System.out.println("Deleting " + fileLoc);
+            new File(fileLoc).delete();
         } catch (IOException e) {
-            System.out.println("Failed to probe " + fileLoc);
+            System.out.println("Failed to probe or delete" + fileLoc);
             new File(fileLoc).delete();
             e.printStackTrace();
         }
