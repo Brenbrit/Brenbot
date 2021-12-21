@@ -1,7 +1,9 @@
 package com.brenbrit.brenbot;
 
 import com.brenbrit.brenbot.listeners.*;
+import com.brenbrit.brenbot.utils.VersionGetter;
 
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import javax.security.auth.login.LoginException;
 
 public class Bot {
 
+    public JDA jda;
     public static final String PROPERTIES_LOC = "config.properties";
     private Properties properties;
 
@@ -28,7 +31,7 @@ public class Bot {
         System.out.println("Starting up Brenbot.");
 
         try {
-            final JDA jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
+            jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
                 .addEventListeners(new MessageListener(), new ReadyListener())
                 .build().awaitReady();
         } catch (LoginException le) {
@@ -40,6 +43,15 @@ public class Bot {
             System.out.println("InterruptedException caught. Exiting.");
             System.exit(1);
         }
+
+        System.out.println("Getting version.");
+        String version = VersionGetter.getVersion("pom.xml");
+        if (version != null) {
+            String status = "v" + version;
+            System.out.println("Setting \"" + status + "\" as status.");
+            jda.getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT, status));
+        }
+
     }
 
     public static Properties readProperties(String fileName) {
