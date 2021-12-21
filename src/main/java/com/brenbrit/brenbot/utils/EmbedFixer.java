@@ -112,6 +112,13 @@ public class EmbedFixer {
         // We have a good extension on our hands!
         if (!Downloader.downloadFromURL(url, fileLoc)) {
             System.out.println("Failed to download " + url);
+            try {
+                System.out.println("Deleting " + fileLoc);
+                new File(fileLoc).delete();
+            } catch (IOException ioe) {
+                System.out.println("Failed to delete " + fileLoc);
+                ioe.printStackTrace();
+            }
             return null;
         } else System.out.println("done");
 
