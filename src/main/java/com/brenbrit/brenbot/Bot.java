@@ -21,6 +21,7 @@ public class Bot {
     private CommandListener commandListener;
 
     public static void main(String[] args) {
+        System.out.println("Starting up Brenbot.");
         new Bot().start();
     }
 
@@ -30,8 +31,6 @@ public class Bot {
     }
 
     public void start() {
-
-        System.out.println("Starting up Brenbot.");
 
         try {
             jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
