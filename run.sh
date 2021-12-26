@@ -11,7 +11,7 @@ echo "Using Maven located at $(type -p mvn)."
 mvnloc=$(type -p mvn)
 fi
 
-if [ ! -d "logs" ]; then mkdir logs; fi
+mkdir logs 2> /dev/null
 (
 logloc="logs/$(date).txt"
 echo "Compiling"

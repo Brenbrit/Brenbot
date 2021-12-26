@@ -1,6 +1,7 @@
 package com.brenbrit.brenbot;
 
 import com.brenbrit.brenbot.listeners.*;
+import com.brenbrit.brenbot.utils.HelpGenerator;
 import com.brenbrit.brenbot.utils.VersionGetter;
 
 import net.dv8tion.jda.api.entities.Activity;
@@ -17,6 +18,7 @@ public class Bot {
     public JDA jda;
     public static final String PROPERTIES_LOC = "config.properties";
     private Properties properties;
+    private CommandListener commandListener;
 
     public static void main(String[] args) {
         new Bot().start();
@@ -24,6 +26,7 @@ public class Bot {
 
     public Bot() {
         this.properties = readProperties(Bot.PROPERTIES_LOC);
+        this.commandListener = new CommandListener();
     }
 
     public void start() {
@@ -32,7 +35,8 @@ public class Bot {
 
         try {
             jda = JDABuilder.createDefault(properties.getProperty("discord.token"))
-                .addEventListeners(new MessageListener(), new ReadyListener())
+                .addEventListeners(new MessageListener(), new ReadyListener(),
+                commandListener)
                 .build().awaitReady();
         } catch (LoginException le) {
             le.printStackTrace();
@@ -51,6 +55,13 @@ public class Bot {
             System.out.println("Setting \"" + status + "\" as status.");
             jda.getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT, status));
         }
+        System.out.println("Generating /help message.");
+        String helpMessage = new HelpGenerator().generateHelpMessage();
+        this.commandListener.addBasicTextCommand("help", helpMessage);
+        System.out.print("Upserting /help command...");
+        jda.upsertCommand("help",
+                "Prints a short description of Brenbot's public commands");
+        System.out.println(" done!");
 
     }
 
