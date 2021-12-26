@@ -59,7 +59,8 @@ public class Bot {
         this.commandListener.addBasicTextCommand("help", helpMessage);
         System.out.print("Upserting /help command...");
         jda.upsertCommand("help",
-                "Prints a short description of Brenbot's public commands");
+                "Prints a short description of Brenbot's public commands")
+                .complete();
         System.out.println(" done!");
 
     }
