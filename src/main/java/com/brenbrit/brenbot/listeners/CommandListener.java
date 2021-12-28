@@ -20,8 +20,13 @@ public class CommandListener extends ListenerAdapter {
 
         // Was the command a basic text command?
         if (basicTextCommands.get(event.getName()) != null) {
-            event.getTextChannel().
-                sendMessage(basicTextCommands.get(event.getName()));
+            System.out.println("Command received!");
+//            event.getTextChannel().
+//                sendMessage(basicTextCommands.get(event.getName())).queue();
+
+            // reply or acknowledge
+            event.reply(basicTextCommands.get(event.getName()))
+                .setEphemeral(false).queue();
         }
     }
 
