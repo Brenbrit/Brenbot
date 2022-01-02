@@ -1,5 +1,6 @@
 package com.brenbrit.brenbot.utils;
 
+import org.slf4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -13,7 +14,8 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 public class VersionGetter {
-    public static String getVersion(String fileLoc) {
+
+    public static String getVersion(String fileLoc, Logger logger) {
         try {
             DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = builderFactory.newDocumentBuilder();
@@ -25,8 +27,8 @@ public class VersionGetter {
             return nodeList.item(0).getTextContent();
 
         } catch (ParserConfigurationException | SAXException | IOException | XPathExpressionException e) {
-            System.out.println("Failed to get version.");
-            e.printStackTrace();
+            logger.error("Failed to get version.");
+            logger.error(e.getStackTrace().toString());
             return null;
         }
     }

@@ -5,11 +5,15 @@ import com.brenbrit.brenbot.entities.FakeUser;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Kneejerk {
 
     public String name;
     public String message;
     public FakeUser sender;
+    private Logger logger = LoggerFactory.getLogger(Kneejerk.class);
 
     public Kneejerk(String name, String message, FakeUser sender) {
         System.out.println("Kneejerk created with a fake user.");
@@ -26,8 +30,9 @@ public class Kneejerk {
         System.out.println("\tmessage: " + message);
     }
 
-    public void MessageAction sendKneejerk(TextChannel chan) {
-        System.out.println("sendKneejerk called");
+    public MessageAction sendKneejerk(TextChannel chan) {
+        logger.info("sendKneejerk for " + name + " called.");
+        return chan.sendMessage(message);
     }
 
 }

@@ -4,14 +4,17 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommandListener extends ListenerAdapter {
 
     private Dictionary<String, String> basicTextCommands;
+    private Logger logger = LoggerFactory.getLogger(CommandListener.class);
 
     public CommandListener() {
         basicTextCommands = new Hashtable<String, String>();
-        System.out.println("CommandListener initialized.");
+        logger.info("CommandListener initialized.");
     }
 
     @Override
@@ -20,7 +23,7 @@ public class CommandListener extends ListenerAdapter {
 
         // Was the command a basic text command?
         if (basicTextCommands.get(event.getName()) != null) {
-            System.out.println("Command received!");
+            logger.info("Command received!");
 //            event.getTextChannel().
 //                sendMessage(basicTextCommands.get(event.getName())).queue();
 
