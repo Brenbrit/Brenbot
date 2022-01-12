@@ -1,19 +1,35 @@
 package com.brenbrit.brenbot.listeners;
 
+import com.brenbrit.brenbot.entities.FakeUser;
+import com.brenbrit.brenbot.entities.Kneejerk;
 import com.brenbrit.brenbot.utils.EmbedFixer;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageListener extends ListenerAdapter {
 
     private EmbedFixer embedFixer;
+    private Logger logger = LoggerFactory.getLogger(MessageListener.class);
+    private ArrayList<Kneejerk> kneejerks;
+    private Hashtable<String, FakeUser> fakeUsers;
+    public String prefix = ".";
 
     public MessageListener() {
         embedFixer = new EmbedFixer();
-        System.out.println("MessageListener initialized.");
+        logger.debug("Reading kneejerks from " + Kneejerk.KNEEJERKS_LOC);
+        kneejerks = Kneejerk.readKneejerks();
+        logger.debug("Finished reading kneejerks.");
+        logger.debug("Reading fake users from " + FakeUser.FAKEUSERS_LOC);
+        fakeUsers = FakeUser.readFakeUsers();
+        logger.debug("Finished reading fake users.");
+        logger.debug("MessageListener initialized.");
     }
 
     @Override
@@ -22,30 +38,31 @@ public class MessageListener extends ListenerAdapter {
         printMessageReceived(event);
 
         Message msg = event.getMessage();
+
+        // Is the message a kneejerk reaction command?
+        for (Kneejerk kneejerk : kneejerks) {
+            logger.info("Message: " + msg.getContentDisplay());
+            logger.info("Kneejerk " + prefix + kneejerk.name);
+            if (msg.getContentDisplay().equalsIgnoreCase(prefix + kneejerk.name)) {
+                kneejerk.sendKneejerk(msg.getTextChannel(), msg);
+                break;
+            }
+        }
+
+        // Check and fix embeds
         embedFixer.checkAndFixEmbeds(msg);
-
-
-        /* if (msg.getContentRaw().equals(".hello")) {
-            System.out.println("Hello found");
-            MessageChannel channel = event.getChannel();
-            long time = System.currentTimeMillis();
-            channel.sendMessage("world!")
-                .queue(response -> {
-                    response.editMessageFormat("world!: %d ms", System.currentTimeMillis() - time).queue();
-                });
-        } */
     }
 
     private void printMessageReceived(MessageReceivedEvent event) {
 
         if (event.isFromType(ChannelType.PRIVATE)) {
-            System.out.printf("[PM] %s: $s\n", event.getAuthor().getName(),
-                event.getMessage().getContentDisplay());
+            logger.debug(String.format("[PM] %s: $s\n", event.getAuthor().getName(),
+                event.getMessage().getContentDisplay()));
         } else {
-            System.out.printf("[%s][%s] %s: %s\n", event.getGuild().getName(),
+            logger.debug(String.format("[%s][%s] %s: %s\n", event.getGuild().getName(),
                 event.getTextChannel().getName(),
                 event.getMember().getEffectiveName(),
-                event.getMessage().getContentDisplay());
+                event.getMessage().getContentDisplay()));
         }
     }
 

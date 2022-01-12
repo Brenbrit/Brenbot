@@ -7,6 +7,9 @@ import com.brenbrit.brenbot.utils.VersionGetter;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,9 +22,10 @@ public class Bot {
     public static final String PROPERTIES_LOC = "config.properties";
     private Properties properties;
     private CommandListener commandListener;
+    final static Logger logger = LoggerFactory.getLogger(Bot.class);
 
     public static void main(String[] args) {
-        System.out.println("Starting up Brenbot.");
+        logger.info("Starting up Brenbot.");
         new Bot().start();
     }
 
@@ -39,29 +43,30 @@ public class Bot {
                 .build().awaitReady();
         } catch (LoginException le) {
             le.printStackTrace();
-            System.out.println("LoginException caught. Exiting.");
+            logger.error("LoginException caught. Exiting.");
             System.exit(1);
         } catch (InterruptedException ie) {
             ie.printStackTrace();
-            System.out.println("InterruptedException caught. Exiting.");
+            logger.error("InterruptedException caught. Exiting.");
             System.exit(1);
         }
 
-        System.out.println("Getting version.");
-        String version = VersionGetter.getVersion("pom.xml");
+        logger.info("Getting version.");
+        String version = VersionGetter.getVersion("pom.xml",
+                LoggerFactory.getLogger("VersionGetter"));
         if (version != null) {
             String status = "v" + version;
-            System.out.println("Setting \"" + status + "\" as status.");
+            logger.info("Setting \"" + status + "\" as status.");
             jda.getPresence().setActivity(Activity.of(Activity.ActivityType.DEFAULT, status));
         }
-        System.out.println("Generating /help message.");
+        logger.info("Generating /help message.");
         String helpMessage = new HelpGenerator().generateHelpMessage();
         this.commandListener.addBasicTextCommand("help", helpMessage);
-        System.out.print("Upserting /help command...");
+        logger.info("Upserting /help command...");
         jda.upsertCommand("help",
                 "Prints a short description of Brenbot's public commands")
                 .complete();
-        System.out.println(" done!");
+        logger.info("Done upserting.");
 
     }
 
@@ -74,19 +79,20 @@ public class Bot {
             prop = new Properties();
             prop.load(fis);
         } catch (FileNotFoundException fnfe) {
-            System.out.println("Propperties file not found at " + fileName + ".");
-            fnfe.printStackTrace();
+            logger.error("Propperties file not found at " + fileName + ".");
+            logger.error(fnfe.getStackTrace().toString());
             System.exit(1);
         } catch (IOException ioe) {
-            System.out.println("IOException while readidng Properties file at " + fileName + ".");
+            logger.error("IOException while readidng Properties file at " + fileName + ".");
+            logger.error(ioe.getStackTrace().toString());
             ioe.printStackTrace();
             System.exit(1);
         } finally {
             try {
                 fis.close();
             } catch (IOException ioe) {
-                System.out.println("IOException while closing properties file.");
-                ioe.printStackTrace();
+                logger.error("IOException while closing properties file.");
+                logger.error(ioe.getStackTrace().toString());
             }
         }
         return prop;

@@ -20,6 +20,8 @@ import net.bramp.ffmpeg.probe.FFmpegStream;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EmbedFixer {
 
@@ -35,6 +37,7 @@ public class EmbedFixer {
     FFmpeg ffmpeg;
     FFprobe ffprobe;
     FFmpegExecutor ffmpegExecutor;
+    private Logger logger = LoggerFactory.getLogger(EmbedFixer.class);
 
     private class VideoFile {
         public String fileLoc;
@@ -55,8 +58,8 @@ public class EmbedFixer {
             ffprobe = new FFprobe();
             ffmpegExecutor = new FFmpegExecutor(ffmpeg, ffprobe);
         } catch (IOException e) {
-            System.out.println("Failed to initialize FFmpeg.");
-            e.printStackTrace();
+            logger.error("Failed to initialize FFmpeg.");
+            logger.error(e.getStackTrace().toString());
         }
     }
 
@@ -65,19 +68,24 @@ public class EmbedFixer {
         for (Attachment attachment : message.getAttachments()) {
             VideoFile result = checkEmbed(attachment);
             if (result != null) {
-                System.out.println("h.265 attachment found! Fixing.");
+                logger.info("h.265 attachment found! Fixing.");
                 File fixed = fixEmbed(result);
                 MessageChannel chan = message.getChannel();
+<<<<<<< HEAD
                 System.out.println("Sending fixed file.");
                 chan.sendFile(fixed).reference(message).queue();
+=======
+                logger.info("Sending fixed file.");
+                chan.sendFile(fixed).queue();
+>>>>>>> e9b5ea083afe052e1b95a585dcd0bcda01bc943e
 
                 try {
-                    System.out.println("Deleting " + fixed.getPath());
+                    logger.info("Deleting " + fixed.getPath());
                     fixed.delete();
-                    System.out.println("Deleting " + result.fileLoc);
+                    logger.info("Deleting " + result.fileLoc);
                     new File(result.fileLoc).delete();
                 } catch (Exception e) {
-                    System.out.printf("Failed to delete file %s.%n", result.fileLoc);
+                    logger.error(String.format("Failed to delete file %s.%n", result.fileLoc));
                 }
             }
         }
@@ -99,21 +107,21 @@ public class EmbedFixer {
         }
         if (!goodExtension) {
             split = url.split("/");
-            System.out.printf("%s is not a repairable video file, so it was not downloaded.%n",
-                    split[split.length - 1]);
+            logger.info(String.format("%s is not a repairable video file, so it was not downloaded.%n",
+                    split[split.length - 1]));
             return null;
         }
 
         String fileLoc = DOWNLOAD_LOC + System.currentTimeMillis()
             + "." + split[split.length - 1];
 
-        System.out.printf("Downloading %s -> %s...", url, fileLoc);
+        logger.info(String.format("Downloading %s -> %s...", url, fileLoc));
 
         // We have a good extension on our hands!
         if (!Downloader.downloadFromURL(url, fileLoc)) {
-            System.out.println("Failed to download " + url);
+            logger.error("Failed to download " + url);
             return null;
-        } else System.out.println("done");
+        } else logger.info("done");
 
         try {
             FFmpegProbeResult res = ffprobe.probe(fileLoc);
@@ -122,12 +130,12 @@ public class EmbedFixer {
                     return new VideoFile(fileLoc, res);
                 }
             }
-            System.out.println("Deleting " + fileLoc);
+            logger.info("Deleting " + fileLoc);
             new File(fileLoc).delete();
         } catch (IOException e) {
-            System.out.println("Failed to probe or delete" + fileLoc);
+            logger.error("Failed to probe or delete" + fileLoc);
             new File(fileLoc).delete();
-            e.printStackTrace();
+            logger.error(e.getStackTrace().toString());
         }
 
 
