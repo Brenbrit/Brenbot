@@ -26,8 +26,9 @@ public class Kneejerk {
         System.out.println("\tmessage: " + message);
     }
 
-    public void MessageAction sendKneejerk(TextChannel chan) {
+    public MessageAction sendKneejerk(TextChannel chan) {
         System.out.println("sendKneejerk called");
+        return chan.sendMessage(message);
     }
 
 }

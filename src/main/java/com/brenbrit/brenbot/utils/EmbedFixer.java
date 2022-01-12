@@ -69,7 +69,7 @@ public class EmbedFixer {
                 File fixed = fixEmbed(result);
                 MessageChannel chan = message.getChannel();
                 System.out.println("Sending fixed file.");
-                chan.sendFile(fixed).queue();
+                chan.sendFile(fixed).reference(message).queue();
 
                 try {
                     System.out.println("Deleting " + fixed.getPath());
