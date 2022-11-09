@@ -74,7 +74,6 @@ public class Kneejerk {
         }
 
         return kneejerks;
->>>>>>> e9b5ea083afe052e1b95a585dcd0bcda01bc943e
     }
 
 }
