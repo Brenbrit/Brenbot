@@ -51,7 +51,7 @@ public class MessageListener extends ListenerAdapter {
 
         // Is the message from profawnsor?
         //if (msg.getAuthor().getId() == "341282409565650964") {
-        if (msg.getAuthor().getId() == ""316021839220572160") {
+        if (msg.getAuthor().getId() == "316021839220572160") {
             logger.info("Profawnsor found");
             msg.getTextChannel().sendMessage("https://media.discordapp.net/attachments/676920706243493898/1039347070915579974/togif.gif").queue();
         }
