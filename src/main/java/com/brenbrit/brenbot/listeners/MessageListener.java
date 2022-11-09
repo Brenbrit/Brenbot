@@ -21,6 +21,9 @@ public class MessageListener extends ListenerAdapter {
     private Hashtable<String, FakeUser> fakeUsers;
     public String prefix = ".";
 
+    // private final String PROFAWNSOR_ID = "341282409565650964";
+    private final String PROFAWNSOR_ID = "316021839220572160";
+
     public MessageListener() {
         embedFixer = new EmbedFixer();
         logger.debug("Reading kneejerks from " + Kneejerk.KNEEJERKS_LOC);
@@ -50,9 +53,7 @@ public class MessageListener extends ListenerAdapter {
         }
 
         // Is the message from profawnsor?
-        //if (msg.getAuthor().getId() == "341282409565650964") {
-        logger.info("Received message from user " + msg.getAuthor().getId() + " (listening for 316021839220572160)");
-        if (msg.getAuthor().getId().equals("316021839220572160")) {
+        if (msg.getAuthor().getId().equals(PROFAWNSOR_ID)) {
             logger.info("Profawnsor found");
             msg.getTextChannel().sendMessage("https://media.discordapp.net/attachments/676920706243493898/1039347070915579974/togif.gif").queue();
         }
