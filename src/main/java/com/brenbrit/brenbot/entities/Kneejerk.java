@@ -36,10 +36,7 @@ public class Kneejerk {
     }
 
     public MessageAction sendKneejerk(TextChannel chan) {
-<<<<<<< HEAD
-        System.out.println("sendKneejerk called");
-        return chan.sendMessage(message);
-=======
+
         logger.debug("sendKneejerk for " + name + " called.");
         return chan.sendMessage(message);
     }
