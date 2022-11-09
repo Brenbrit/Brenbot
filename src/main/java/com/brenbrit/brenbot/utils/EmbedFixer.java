@@ -71,13 +71,9 @@ public class EmbedFixer {
                 logger.info("h.265 attachment found! Fixing.");
                 File fixed = fixEmbed(result);
                 MessageChannel chan = message.getChannel();
-<<<<<<< HEAD
-                System.out.println("Sending fixed file.");
-                chan.sendFile(fixed).reference(message).queue();
-=======
+
                 logger.info("Sending fixed file.");
-                chan.sendFile(fixed).queue();
->>>>>>> e9b5ea083afe052e1b95a585dcd0bcda01bc943e
+                chan.sendFile(fixed).reference(message).queue();
 
                 try {
                     logger.info("Deleting " + fixed.getPath());
