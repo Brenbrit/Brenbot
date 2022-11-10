@@ -22,6 +22,7 @@ public class MessageListener extends ListenerAdapter {
     public String prefix = ".";
 
     private final String PROFAWNSOR_ID = "341282409565650964";
+    private final String PROFAWNSOR_RESP = "https://media.discordapp.net/attachments/1025113545559527454/1040325912463429773/IMG_0659.jpg";
 
     public MessageListener() {
         embedFixer = new EmbedFixer();
@@ -54,7 +55,7 @@ public class MessageListener extends ListenerAdapter {
         // Is the message from profawnsor?
         if (msg.getAuthor().getId().equals(PROFAWNSOR_ID)) {
             logger.info("Profawnsor found. Sending funny gif");
-            msg.getTextChannel().sendMessage("https://media.discordapp.net/attachments/676920706243493898/1039347070915579974/togif.gif").queue();
+            msg.getTextChannel().sendMessage(PROFAWNSOR_RESP).queue();
         }
 
         // Check and fix embeds
