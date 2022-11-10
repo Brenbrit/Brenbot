@@ -22,7 +22,7 @@ public class MessageListener extends ListenerAdapter {
     public String prefix = ".";
 
     private final String PROFAWNSOR_ID = "341282409565650964";
-    private final String PROFAWNSOR_RESP = "https://media.discordapp.net/attachments/1025113545559527454/1040325912463429773/IMG_0659.jpg";
+    private final String PROFAWNSOR_RESP = "https://tenor.com/view/die-lit-die-simpsons-simons-the-simpsons-gif-20592541";
 
     public MessageListener() {
         embedFixer = new EmbedFixer();
