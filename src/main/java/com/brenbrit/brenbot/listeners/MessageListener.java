@@ -22,7 +22,7 @@ public class MessageListener extends ListenerAdapter {
     public String prefix = ".";
 
     private final String PROFAWNSOR_ID = "341282409565650964";
-    private final String PROFAWNSOR_RESP = "https://media.discordapp.net/attachments/1025113545559527454/1040413191781482506/IMG_0660.jpg";
+    private final String PROFAWNSOR_RESP = "https://media.discordapp.net/attachments/1025830529507008722/1026887053893439558/cat_doesnt_know-1.gif";
 
     public MessageListener() {
         embedFixer = new EmbedFixer();
