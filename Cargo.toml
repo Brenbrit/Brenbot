@@ -1,0 +1,13 @@
+[package]
+name = "brenbot"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+env_logger = "0.11"
+lazy_static = "1.4"
+poise = "0.6"
+regex = "1.10"
+tokio = { version = "1.36", features = ["rt-multi-thread"] }
