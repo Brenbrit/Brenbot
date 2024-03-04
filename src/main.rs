@@ -13,8 +13,6 @@ lazy_static! {
     static ref X_COM: Regex = Regex::new("[^a-zA-Z\\d\\s:]*x\\.com").unwrap();
 }
 
-const BOT_ALLOWED_CHANNELS: &'static [&'static str] = &["bot", "mudae"];
-
 // Custom user data passed to all command functions
 pub struct Data {
 }
@@ -84,41 +82,7 @@ async fn event_handler(
                 // Delete the old message
                 new_message.delete(&ctx.http).await?;
             }
-        },
-        serenity::FullEvent::MessageUpdate { old_if_available: _, new: _, event } => {
-            match &event.author {
-                None => { return Ok(()) },
-                Some(author) => {
-                    if ! author.bot {
-                        return Ok(());
-                    }
-                },
-            };
-
-            let channel = match ctx.cache.channel(event.channel_id) {
-                Some(channel) => { channel.to_owned() },
-                None => { return Ok(()) },
-            };
-
-            // Make sure we're not in a bot channel
-            let channel_name = channel.name.to_lowercase();
-            for allowed_channel in BOT_ALLOWED_CHANNELS {
-                if channel_name.contains(allowed_channel) {
-                    return Ok(());
-                }
-            }
-
-            if let Some(interaction) = &event.interaction {
-                if let Some(interaction) = interaction {
-                    let id = &interaction.user.id.clone();
-                    let to_send = format!("<@{}>!!! https://tenor.com/view/general-discord-no-bot-commands-in-general-no-bot-commands-gif-21094932",
-                                                  id);
-                    let builder = serenity::CreateMessage::new()
-                        .content(to_send);
-                    channel.send_message(&ctx.http, builder).await?;
-                }
-            }
-        },
+        }
         _ => {}
     }
     Ok(())
